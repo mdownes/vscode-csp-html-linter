@@ -8,7 +8,7 @@
 	"displayName": "CSP HTML Linter",
 	"license": "MIT",
 	"pricing": "Free",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"icon": "CspLint_icon.jpg",
 	"repository": {
 		"type": "git",
