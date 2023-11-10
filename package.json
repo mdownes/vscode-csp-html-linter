@@ -1,6 +1,6 @@
 {
 	"name": "vscode-csp-html-linter",
-	"description": "A vscode extension to lint HTML for Content Security Policy violations",
+	"description": "A strict Content Security Policy Linter for your HTML",
 	"author": {
 		"name": "Maurice Downes",
 		"url": "https://advancedfontends.com"
