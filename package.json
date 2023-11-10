@@ -8,7 +8,7 @@
 	"displayName": "CSP HTML Linter",
 	"license": "MIT",
 	"pricing": "Free",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"icon": "CspLint_icon.jpg",
 	"repository": {
 		"type": "git",
@@ -36,37 +36,31 @@
 			"type": "object",
 			"title": "Cconfiguration",
 			"properties": {
-				"languageServerExample.maxNumberOfProblems": {
-					"scope": "resource",
-					"type": "number",
-					"default": 100,
-					"description": "Controls the maximum number of problems produced by the server."
-				},
-				"languageServerExample.allowInlineStyles": {
+				"cspHtmlLinter.allowInlineStyles": {
 					"scope": "resource",
 					"type": "boolean",
 					"default": false,
 					"description": "Indicates if inline styles are allowed."
 				},
-				"languageServerExample.allowInlineJs": {
+				"cspHtmlLinter.allowInlineJs": {
 					"scope": "resource",
 					"type": "boolean",
 					"default": false,
 					"description": "Indicates if inline JavaScript is allowed."
 				},
-				"languageServerExample.allowStyleTagWithoutNonce": {
+				"cspHtmlLinter.allowStyleTagWithoutNonce": {
 					"scope": "resource",
 					"type": "boolean",
 					"default": false,
 					"description": "Inicates if Style tags with out nonces are allowed."
 				},
-				"languageServerExample.allowScriptTagWithoutNonce": {
+				"cspHtmlLinter.allowScriptTagWithoutNonce": {
 					"scope": "resource",
 					"type": "boolean",
 					"default": false,
 					"description": "Indicates if Script tags without nonces are allowed."
 				},
-				"languageServerExample.trace.server": {
+				"cspHtmlLinter.trace.server": {
 					"scope": "window",
 					"type": "string",
 					"enum": [

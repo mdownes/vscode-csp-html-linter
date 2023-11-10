@@ -1,6 +1,6 @@
 {
 	"name": "vscode-csp-html-linter-server",
-	"description": "Example implementation of a language server in node.",
+	"description": "implementation of a language server in node.",
 	"version": "1.0.0",
 	"author": {
 		"name": "Maurice Downes",
