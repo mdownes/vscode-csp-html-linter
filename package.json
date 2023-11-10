@@ -8,7 +8,7 @@
 	"displayName": "CSP HTML Linter",
 	"license": "MIT",
 	"pricing": "Free",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"icon": "CspLint_icon.jpg",
 	"repository": {
 		"type": "git",
@@ -52,7 +52,7 @@
 					"scope": "resource",
 					"type": "boolean",
 					"default": false,
-					"description": "Inicates if Style tags with out nonces are allowed."
+					"description": "Inicates if Style tags without nonces are allowed."
 				},
 				"cspHtmlLinter.allowScriptTagWithoutNonce": {
 					"scope": "resource",

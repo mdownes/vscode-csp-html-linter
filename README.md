@@ -17,7 +17,7 @@ CSP Strict by default , it throws errors if it finds any usage of:
 
 ## Functionality
 
-This Language Server works for plain .html, .ts and .js  files. It has the following language features:
+This Language Server works for .html, .ts and .js  files. It has the following language features:
 - Diagnostics regenerated on each file change or configuration change
 
 It also includes an End-to-End test.
