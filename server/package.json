@@ -1,0 +1,22 @@
+{
+	"name": "vscode-csp-html-linter-server",
+	"description": "Example implementation of a language server in node.",
+	"version": "1.0.0",
+	"author": {
+		"name": "Maurice Downes",
+		"url": "https://advancedfontends.com"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mdownes/vscode-csp-html-linter.git"
+	},
+	"dependencies": {
+		"vscode-languageserver": "^8.1.0",
+		"vscode-languageserver-textdocument": "^1.0.8"
+	},
+	"scripts": {}
+}
