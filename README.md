@@ -14,7 +14,7 @@ CSP Strict by default , it throws errors if it finds any usage of:
     * ```<script></script>```
 
 
-<video src="csp-html-linter.mp4" autoplay loop muted playsinline></video>
+<img src="csp-html-linter.gif" />
 
 ## Functionality
 
