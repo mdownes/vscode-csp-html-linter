@@ -14,13 +14,13 @@ CSP Strict by default , it throws errors if it finds any usage of:
     * ```<script></script>```
 
 
+<video src="csp-html-linter.mp4" autoplay loop muted playsinline></video>
 
 ## Functionality
 
 This Language Server works for .html, .ts and .js  files. It has the following language features:
 - Diagnostics regenerated on each file change or configuration change
 
-It also includes an End-to-End test.
 
 
 ## Settings
