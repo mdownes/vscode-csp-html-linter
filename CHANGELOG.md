@@ -10,3 +10,6 @@
 
 # Version 1.0.7
 * Fixed issue where a trailing comma in include list crashed server
+
+# Version 1.0.8
+* Documentation updates to include example globs for include and exclude

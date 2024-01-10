@@ -30,3 +30,10 @@ It has the following configurable settings (all defaulting to false):
 * allowInlineJs: boolean,
 * allowStyleTagWithoutNonce: boolean,
 * allowScriptTagWithoutNonce: boolean,
+* include:string  
+    * A comma delimited string of globs to include for parsing i.e ```"**/src/**/*.html, **/src/**/*.js"```
+* exlude:string
+    * A comma delimtited string of globs to exclude files for parsing i.e ```"**/test/**/*.html"```
+<br>
+
+Note: All settings can be set on a user or workspace level.
