@@ -39,6 +39,7 @@ export function activate(context: ExtensionContext) {
 			{ scheme: 'file', language: 'typescript' },
 			{ scheme: 'file', language: 'javascript' }
 		],
+		
 		synchronize: {
 			// Notify the server about file changes to '.clientrc files contained in the workspace
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')

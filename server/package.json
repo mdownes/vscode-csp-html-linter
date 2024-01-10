@@ -15,6 +15,8 @@
 		"url": "https://github.com/mdownes/vscode-csp-html-linter.git"
 	},
 	"dependencies": {
+		"@types/micromatch": "^4.0.6",
+		"micromatch": "^4.0.5",
 		"vscode-languageserver": "^8.1.0",
 		"vscode-languageserver-textdocument": "^1.0.8"
 	},

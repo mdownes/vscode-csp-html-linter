@@ -6,8 +6,17 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { getDocUri, activate } from './helper';
+import { beforeEach } from 'mocha';
 
 suite('Should get diagnostics', () => {
+	beforeEach(() => {
+		const testFramework = vscode.workspace.getConfiguration('cspHtmlLinter');
+		testFramework.update('allowInlineStyles', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowInlineJs', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowStyleTagWithoutNonce', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowScriptTagWithoutNonce', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('exclude', '', vscode.ConfigurationTarget.Global);
+	})
 	const docUri = getDocUri('diagnostics.html');
 
 	test('Diagnoses Style tag without nonce', async () => {
@@ -17,6 +26,56 @@ suite('Should get diagnostics', () => {
 			{ message: 'You must not use inline styles', range: toRange(1, 1, 1, 31), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
 			{ message: 'You must add a nonce to a style tag', range: toRange(0, 1, 0, 16), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
 		]);
+	});
+});
+
+suite('Should change diagnostics when settings are changed', () => {
+	const testFramework = vscode.workspace.getConfiguration('cspHtmlLinter');
+	beforeEach(() => {
+
+		testFramework.update('allowInlineStyles', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowInlineJs', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowStyleTagWithoutNonce', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowScriptTagWithoutNonce', false, vscode.ConfigurationTarget.Global);
+		testFramework.update('exclude', '', vscode.ConfigurationTarget.Global);
+	})
+
+	const docUri = getDocUri('diagnostics.html');
+
+	test('Does not return any diagnotics when file is excluded', async () => {
+
+		// Update configuration
+		testFramework.update('exclude', '**/diag*', vscode.ConfigurationTarget.Global);
+
+		await activate(docUri);
+		const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
+		assert.equal(actualDiagnostics.length, 0);
+
+	});
+
+	test('returns one less diagnostic as inlinestyles allowed', async () => {
+		const testFramework = vscode.workspace.getConfiguration('cspHtmlLinter');
+		// Update configuration
+		testFramework.update('allowInlineStyles', true, vscode.ConfigurationTarget.Global);
+		console.dir(testFramework)
+		await activate(docUri);
+		const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
+
+		assert.equal(actualDiagnostics.length, 3);
+	});
+
+	test('returns no diagnostics when all options are turned off', async () => {
+
+		// Update configuration
+		testFramework.update('allowInlineStyles', true, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowInlineJs', true, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowStyleTagWithoutNonce', true, vscode.ConfigurationTarget.Global);
+		testFramework.update('allowScriptTagWithoutNonce', true, vscode.ConfigurationTarget.Global);
+
+		await activate(docUri);
+		const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
+
+		assert.equal(actualDiagnostics.length, 0);
 	});
 });
 
@@ -30,6 +89,7 @@ async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.D
 	await activate(docUri);
 
 	const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
+
 	assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
 
 	expectedDiagnostics.forEach((expectedDiagnostic, i) => {

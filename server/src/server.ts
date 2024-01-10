@@ -15,7 +15,10 @@ import {
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
 	InitializeResult
+
+
 } from 'vscode-languageserver/node';
+import * as micromatch from 'micromatch';
 
 import {
 	TextDocument
@@ -87,6 +90,8 @@ interface ExampleSettings {
 	allowInlineJs: boolean;
 	allowStyleTagWithoutNonce: boolean;
 	allowScriptTagWithoutNonce: boolean;
+	exclude: string;
+	include: string;
 }
 
 // The global settings, used when the `workspace/configuration` request is not supported by the client.
@@ -97,7 +102,9 @@ const defaultSettings: ExampleSettings = {
 	allowInlineStyles: false,
 	allowInlineJs: false,
 	allowStyleTagWithoutNonce: false,
-	allowScriptTagWithoutNonce: false
+	allowScriptTagWithoutNonce: false,
+	exclude: '',
+	include: "**/**/*.html, **/**/*.ts, **/**/*.js"
 };
 let globalSettings: ExampleSettings = defaultSettings;
 
@@ -144,69 +151,47 @@ documents.onDidChangeContent(change => {
 	validateTextDocument(change.document);
 });
 
+async function getFiles(uri: string, include: string[], exclude: string[]) {
+	const options: any = { ignore: exclude };
+	if (exclude.length == 1 && exclude[0] === '') {
+		delete options.ignore;
+	}
+	return micromatch([uri], include, options).length >= 1;
+}
+
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	// In this simple example we get the settings for every validate run.
 	const settings = await getDocumentSettings(textDocument.uri);
+	const includes = settings.include.split(/[ ,]+/);
+	const excludes = settings.exclude.split(/[ ,]+/);
 
-	// The validator creates diagnostics for all uppercase words length 2 and more
-	const text = textDocument.getText();
-	//const pattern = /\b[A-Z]{2,}\b/g;
-	//let m: RegExpExecArray | null;
-
-	//let problems = 0;
+	const isMatch = await getFiles(textDocument.uri, includes, excludes);
 	const diagnostics: Diagnostic[] = [];
-	const violations = parse(text, {
-		includeLocationInfo: true,
-		allowInlineStyles: settings.allowInlineStyles,
-		allowInlineJs: settings.allowInlineJs,
-		allowStyleTagWithoutNonce: settings.allowStyleTagWithoutNonce,
-		allowScriptTagWithoutNonce: settings.allowScriptTagWithoutNonce
-	});
 
-	for (let i = 0; i < violations.length; i++) { //could check max here
-		const diagnostic: Diagnostic = {
-			severity: DiagnosticSeverity.Error,
-			range: {
-				start: { line: violations[i].location.startLine - 1, character: violations[i].location.startCol },
-				end: { line: violations[i].location.endLine - 1, character: violations[i].location.endCol }
-			},
-			message: violations[i].message,
-			source: 'ex'
-		};
-		diagnostics.push(diagnostic);
+	if (isMatch) {
+		// The validator creates diagnostics for all uppercase words length 2 and more
+		const text = textDocument.getText();
+		const violations = parse(text, {
+			includeLocationInfo: true,
+			allowInlineStyles: settings.allowInlineStyles,
+			allowInlineJs: settings.allowInlineJs,
+			allowStyleTagWithoutNonce: settings.allowStyleTagWithoutNonce,
+			allowScriptTagWithoutNonce: settings.allowScriptTagWithoutNonce
+		});
+
+		for (let i = 0; i < violations.length; i++) { //could check max here
+			const diagnostic: Diagnostic = {
+				severity: DiagnosticSeverity.Error,
+				range: {
+					start: { line: violations[i].location.startLine - 1, character: violations[i].location.startCol },
+					end: { line: violations[i].location.endLine - 1, character: violations[i].location.endCol }
+				},
+				message: violations[i].message,
+				source: 'ex'
+			};
+			diagnostics.push(diagnostic);
+		}
 	}
-
-	// while ((m = pattern.exec(text)) && problems < settings.maxNumberOfProblems) {
-	// 	problems++;
-	// 	const diagnostic: Diagnostic = {
-	// 		severity: DiagnosticSeverity.Warning,
-	// 		range: {
-	// 			start: textDocument.positionAt(m.index),
-	// 			end: textDocument.positionAt(m.index + m[0].length)
-	// 		},
-	// 		message: `${m[0]} is all uppercase.`,
-	// 		source: 'ex'
-	// 	};
-	// 	if (hasDiagnosticRelatedInformationCapability) {
-	// 		diagnostic.relatedInformation = [
-	// 			{
-	// 				location: {
-	// 					uri: textDocument.uri,
-	// 					range: Object.assign({}, diagnostic.range)
-	// 				},
-	// 				message: 'Spelling matters'
-	// 			},
-	// 			{
-	// 				location: {
-	// 					uri: textDocument.uri,
-	// 					range: Object.assign({}, diagnostic.range)
-	// 				},
-	// 				message: 'Particularly for names'
-	// 			}
-	// 		];
-	// 	}
-	// 	diagnostics.push(diagnostic);
-	// }
 
 	// Send the computed diagnostics to VSCode.
 	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });

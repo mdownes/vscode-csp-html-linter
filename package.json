@@ -8,7 +8,7 @@
 	"displayName": "CSP HTML Linter",
 	"license": "MIT",
 	"pricing": "Free",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"icon": "CspLint_icon.jpg",
 	"repository": {
 		"type": "git",
@@ -34,7 +34,7 @@
 	"contributes": {
 		"configuration": {
 			"type": "object",
-			"title": "Cconfiguration",
+			"title": "Configuration",
 			"properties": {
 				"cspHtmlLinter.allowInlineStyles": {
 					"scope": "resource",
@@ -59,6 +59,18 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Indicates if Script tags without nonces are allowed."
+				},
+				"cspHtmlLinter.include": {
+					"scope": "resource",
+					"type": "string",
+					"default": "**/**/*.html, **/**/*.ts, **/**/*.js",
+					"description": "A comma separated list of globs that indicate which files and folders the extension should work on."
+				},
+				"cspHtmlLinter.exclude": {
+					"scope": "resource",
+					"type": "string",
+					"default": "",
+					"description": "A comma separated list of globs that indicate which files and folders the extension should ignore."
 				},
 				"cspHtmlLinter.trace.server": {
 					"scope": "window",
