@@ -7,3 +7,6 @@
 # Version 1.0.6
 * Added support for include and exclude options.
 * These can be set on a per project basis.
+
+# Version 1.0.7
+* Fixed issue where a trailing comma in include list crashed server

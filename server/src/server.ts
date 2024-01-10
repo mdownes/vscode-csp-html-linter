@@ -156,14 +156,20 @@ async function getFiles(uri: string, include: string[], exclude: string[]) {
 	if (exclude.length == 1 && exclude[0] === '') {
 		delete options.ignore;
 	}
-	return micromatch([uri], include, options).length >= 1;
+	let result = true;
+	if (include.length >= 1) {
+		result = micromatch([uri], include, options).length >= 1;
+	}
+	return result;
 }
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	// In this simple example we get the settings for every validate run.
 	const settings = await getDocumentSettings(textDocument.uri);
-	const includes = settings.include.split(/[ ,]+/);
-	const excludes = settings.exclude.split(/[ ,]+/);
+	let includes = settings.include.split(/[ ,]+/);
+	let excludes = settings.exclude.split(/[ ,]+/);
+	includes = includes.filter((str) => str !== '');
+	excludes = excludes.filter((str) => str !== '');
 
 	const isMatch = await getFiles(textDocument.uri, includes, excludes);
 	const diagnostics: Diagnostic[] = [];
