@@ -20,11 +20,12 @@ suite('Should get diagnostics', () => {
 	const docUri = getDocUri('diagnostics.html');
 
 	test('Diagnoses Style tag without nonce', async () => {
+		const source ='CSP HTML Linter';
 		await testDiagnostics(docUri, [
-			{ message: 'You must not use the inline Javascript event: onclick', range: toRange(4, 1, 4, 35), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
-			{ message: 'You must add a nonce to a script tag', range: toRange(3, 12, 3, 29), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
-			{ message: 'You must not use inline styles', range: toRange(1, 1, 1, 31), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
-			{ message: 'You must add a nonce to a style tag', range: toRange(0, 1, 0, 16), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
+			{ message: 'You must not use the inline Javascript event: onclick', range: toRange(4, 1, 4, 35), severity: vscode.DiagnosticSeverity.Error, source: source },
+			{ message: 'You must add a nonce to a script tag', range: toRange(3, 12, 3, 29), severity: vscode.DiagnosticSeverity.Error, source: source },
+			{ message: 'You must not use inline styles', range: toRange(1, 1, 1, 31), severity: vscode.DiagnosticSeverity.Error, source: source },
+			{ message: 'You must add a nonce to a style tag', range: toRange(0, 1, 0, 16), severity: vscode.DiagnosticSeverity.Error, source: source },
 		]);
 	});
 });

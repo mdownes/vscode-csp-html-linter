@@ -193,7 +193,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 					end: { line: violations[i].location.endLine - 1, character: violations[i].location.endCol }
 				},
 				message: violations[i].message,
-				source: 'ex'
+				source: 'CSP HTML Linter'
 			};
 			diagnostics.push(diagnostic);
 		}

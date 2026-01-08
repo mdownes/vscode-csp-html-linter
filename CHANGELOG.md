@@ -13,3 +13,6 @@
 
 # Version 1.0.8
 * Documentation updates to include example globs for include and exclude
+
+# Version 1.0.9
+* Update to fix user request to inform user of the correct name of the extension reporting the violations
